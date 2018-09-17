@@ -1,7 +1,7 @@
 
 def read_file(name):
    file = open(name,'r')
-   config = dict.fromkeys(['host', 'port', 'cpu', 'threads'])
+   config = dict.fromkeys(['host', 'port', 'cpu', 'threads','files'])
    for line in file:
       words = (' '.join(line.split())).split(' ')
       if words[0] in config.keys() :

@@ -1,21 +1,29 @@
 from datetime import datetime
 
 
-OK = '200'
-NOT_FOUND = '404'
-METHOD_NOT_ALLOWED = '405'
-FORBIDDEN = '403'
+
 
 
 class Response:
-    def __init__(self, status, protocol,content_type, content_length, body):
+    OK = '200 OK'
+    NOT_FOUND = '404 NOT FOUND'
+    METHOD_NOT_ALLOWED = '405 NOT ALLOWED'
+    FORBIDDEN = '403 FORBIDDEN'
+    def __init__(self, status, protocol,connection,content_type='', content_length=0, body=b''):
         self.status = status
-        self.protocol = protocol
+        self.protocol = protocol.decode()
+        self.connection = connection
         self.content_type = content_type
         self.content_length = content_length
         self.body = body
-        # self.date = Response.timestamp()
+        self.server = "server"
+        self.date = Response.today_date
 
+
+    today_date = datetime.today()
+
+    def get_connection(self):
+        return self.connection
 
     def get_status(self):
         return self.status

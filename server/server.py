@@ -1,5 +1,6 @@
 import asyncio
 import os
+import uvloop
 # logging.basicConfig(level=logging.INFO)
 # logger = logging.getLogger(__name__)
 #TODO: Сделать нормальный логгер если будет время
@@ -9,14 +10,14 @@ class Server:
         self.host = host
         self.port = port
         self.handler = handler
+        asyncio.set_event_loop_policy( uvloop.EventLoopPolicy())
 
     async def subserver_start(self,loop):
-        await asyncio.start_server(self.handler,self.host,self.port,loop = loop,reuse_port = True)
+        await asyncio.start_server(self.handler.handle,self.host,self.port,loop = loop,reuse_port = True)
 
 
     def start(self, cpu, threads):
         subservers = []
-        # ADD config faster
         for i in range(0,cpu):
             pid = os.fork()
             subservers.append(pid)
