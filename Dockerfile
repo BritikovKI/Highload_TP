@@ -13,9 +13,10 @@ RUN apt-get -y install apache2-utils
 
 ADD . .
 
-COPY ./http-test-suite/ /var/www/html/
+MKDIR -p /home/chapay/TechPark/Highload/tests
+COPY ./tests/ /home/chapay/TechPark/Highload/tests
 
-COPY ./default.conf /
+COPY ./test_config /
 
 
 EXPOSE 80
