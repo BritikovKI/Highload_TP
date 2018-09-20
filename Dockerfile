@@ -13,7 +13,7 @@ RUN apt-get -y install apache2-utils
 
 ADD . .
 
-MKDIR -p /home/chapay/TechPark/Highload/tests
+RUN mkdir -p /home/chapay/TechPark/Highload/tests
 COPY ./tests/ /home/chapay/TechPark/Highload/tests
 
 COPY ./test_config /
