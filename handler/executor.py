@@ -5,13 +5,13 @@ from models.file import File
 import os
 import aiofiles
 import urllib.parse
-
+from pymemcache.client import base
 
 
 class Executor:
     def __init__(self,files):
         self.files_root = files
-
+        self.client = base.Client(('localhost' ,11211))
     content_types = {
         'html': 'text/html',
         'txt': 'text/txt',
@@ -46,13 +46,13 @@ class Executor:
 
 
         try:
+
             file = self.get_file_info(request)
-            if not os.path.exists(file.filename):
-                if request.path[-1:] == '/':
-                    return Response(status=Response.FORBIDDEN, protocol=request.protocol)
-                else:
-                    return Response(status=Response.NOT_FOUND, protocol=request.protocol)
-            body = await self.read_file(file.filename, file.file_path)
+            body = self.client.get(file.filename)
+            if( body is None):
+                body = await self.read_file(file.filename)
+                self.client.set(file.filename,body,3600)
+            # body = await self.read_file(file.filename)
             return Response(status = Response.OK, protocol = request.protocol, connection=request.connection,content_type=file.content_type,content_length=file.content_length,
                             body=body)
         except ForbidenError:
@@ -89,12 +89,6 @@ class Executor:
         return File(filename=file,file_path=file_path,content_type=content,content_length = os.path.getsize(file))
 
 
-    async def read_file(self,filename,url):
-        if not os.path.isfile(filename):
-            if url[-1] == '/' and url.count(".") < 1:
-                raise ForbidenError
-            else:
-                raise NotFoundError
-
+    async def read_file(self,filename):
         async with aiofiles.open(filename, mode='rb') as file:
             return await file.read()

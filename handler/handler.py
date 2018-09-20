@@ -15,6 +15,7 @@ class Handler:
 
     def __init__(self, root):
         self.root = root
+        self.executor = Executor(self.root)
 
 
     async def handle(self, reader, writer):
@@ -31,8 +32,7 @@ class Handler:
                 break
         if len(data)>0:
             request = get_values(data)
-            executor = Executor(self.root)
-            response = await executor.execute(request)
+            response = await self.executor.execute(request)
             response_data = Serializer.dump(response)
             writer.write(response_data)
             await writer.drain()

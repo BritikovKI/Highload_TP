@@ -16,6 +16,7 @@ class Serializer:
             body = response.body.decode()
         else:
             body = response.body
+        # body = response.body
         return "{} {}\r\n"\
     "Server: {}\r\n"\
     "Date: {}\r\n" \

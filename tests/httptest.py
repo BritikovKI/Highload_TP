@@ -153,6 +153,7 @@ class HttpServer(unittest.TestCase):
     self.conn.request("POST", "/httptest/dir2/page.html")
     r = self.conn.getresponse()
     data = r.read()
+
     self.assertIn(int(r.status), (400,405))
 
   def test_head_method(self):
