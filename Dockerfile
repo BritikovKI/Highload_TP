@@ -1,12 +1,23 @@
-#FROM ubuntu:16.04
-#MAINTAINER Britikov Konstantin
-#RUN apt-get update -y
-#
-#RUN apt-get install -y python3
-#
-#ADD ./Highload  /coro_server
-#ADD ./httptest /var/www/html/httptest/
-#
-#EXPOSE 80
-#
-#CMD python3 /coro_server/main.py
+FROM ubuntu:16.04
+
+RUN apt-get -y update &&\
+        apt-get -y upgrade &&\
+        apt-get -y install python3-pip
+
+RUN pip3 install asyncio &&\
+        pip3 install uvloop &&\
+        pip3 install aiofiles &&\
+        pip3 install urllib3
+
+RUN apt-get -y install apache2-utils
+
+ADD . .
+
+COPY ./http-test-suite/ /var/www/html/
+
+COPY ./default.conf /
+
+
+EXPOSE 80
+
+CMD python3 source/main.py
