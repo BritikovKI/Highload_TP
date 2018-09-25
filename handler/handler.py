@@ -33,7 +33,7 @@ class Handler:
         if len(data)>0:
             request = get_values(data)
             response = await self.executor.execute(request)
-            response_data = Serializer.dump(response)
+            response_data = await Serializer.dump(response)
             writer.write(response_data)
             await writer.drain()
         writer.close()

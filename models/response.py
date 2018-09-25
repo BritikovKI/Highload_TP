@@ -17,7 +17,7 @@ class Response:
         self.content_length = content_length
         self.body = body
         self.server = "server"
-        self.date = Response.today_date
+        self.date = Response.today_date.strftime("%a, %d %b %Y %H:%M:%S %Z")
 
 
     today_date = datetime.today()

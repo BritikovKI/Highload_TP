@@ -40,7 +40,7 @@ class Executor:
             return Response(status = Response.FORBIDDEN, protocol = request.protocol, connection='')
         except NotFoundError:
             return Response(status = Response.NOT_FOUND, protocol = request.protocol, connection='')
-        return Response(status=Response.OK, protocol=request.protocol, connection='', content_length=file.content_length, content_type=file.content_type)
+        return Response(status=Response.OK, protocol=request.protocol, connection='closed', content_length=file.content_length, content_type=file.content_type)
 
     async def execute_get(self,request):
 
@@ -53,7 +53,7 @@ class Executor:
                 body = await self.read_file(file.filename)
                 self.client.set(file.filename,body,3600)
             # body = await self.read_file(file.filename)
-            return Response(status = Response.OK, protocol = request.protocol, connection=request.connection,content_type=file.content_type,content_length=file.content_length,
+            return Response(status = Response.OK, protocol = request.protocol, connection='closed',content_type=file.content_type,content_length=file.content_length,
                             body=body)
         except ForbidenError:
             return Response(status = Response.FORBIDDEN, protocol = request.protocol, connection='')
