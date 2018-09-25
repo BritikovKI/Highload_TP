@@ -47,12 +47,8 @@ class Executor:
 
         try:
 
-            file = self.get_file_info(request)
-            body = self.client.get(file.filename)
-            if( body is None):
-                body = await self.read_file(file.filename)
-                self.client.set(file.filename,body,3600)
-            # body = await self.read_file(file.filename)
+
+            body = await self.read_file(file.filename)
             return Response(status = Response.OK, protocol = request.protocol, connection='closed',content_type=file.content_type,content_length=file.content_length,
                             body=body)
         except ForbidenError:
