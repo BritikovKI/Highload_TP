@@ -17,5 +17,7 @@ ADD . .
 
 EXPOSE 80
 
+RUN memcached
+
 CMD python3 main.py
 
