@@ -3,7 +3,7 @@ from server.server import Server
 from handler.handler import Handler
 
 if __name__ == '__main__':
-    config = read_file('httpd.conf')
+    config = read_file('test_config')
     print(config)
     handler = Handler(config['files'])
     server = Server(config['host'], config['port'], handler)
