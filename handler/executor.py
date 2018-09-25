@@ -46,8 +46,7 @@ class Executor:
 
 
         try:
-
-
+            file = self.get_file_info(request)
             body = await self.read_file(file.filename)
             return Response(status = Response.OK, protocol = request.protocol, connection='closed',content_type=file.content_type,content_length=file.content_length,
                             body=body)
